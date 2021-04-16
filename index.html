@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Autocomplete Search Widget</title>
+  </head>
+  <body>
+    <input type="text" placeholder="Enter a place" id="autocomplete" />
+    <script>
+      let autocomplete;
+      function initAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(
+          document.getElementById("autocomplete"),
+          {
+            types: ["establishment"],
+            componentRestrictions: { country: ["AU"] },
+            fields: ["place_id", "geometry", "name"],
+          }
+        );
+
+        autocomplete.addListener("place_changed", onPlaceChanged);
+      }
+      function onPlaceChanged() {
+        var place = autocomplete.getPlace();
+
+        if (!place.geometry) {
+          //   User did not select a prediction; reset the input field
+          document.getElementById("autocomplete").placeholder = "Enter a place";
+        } else {
+          //   Diaplay details about the valid place
+          document.getElementById("details").innerHTML = place.name;
+        }
+      }
+    </script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSsHNVO1lDvFtxkvQ_JorTQTL_nD7vaE4&libraries=places&callback=initAutocomplete"
+      async
+      defer
+    ></script>
+  </body>
+</html>
